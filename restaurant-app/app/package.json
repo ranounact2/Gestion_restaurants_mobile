@@ -1,0 +1,42 @@
+{
+  "name": "restaurant-app-mobile",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ../node_modules/.bin/expo start",
+    "android": "node ../node_modules/.bin/expo start --android",
+    "ios": "node ../node_modules/.bin/expo start --ios",
+    "web": "node ../node_modules/.bin/expo start --web"
+  },
+  "dependencies": {
+    "@react-navigation/bottom-tabs": "^6.5.20",
+    "@react-navigation/native": "^6.1.17",
+    "@react-navigation/stack": "^6.3.29",
+    "@reduxjs/toolkit": "^2.2.5",
+    "@types/react": "~19.1.10",
+    "axios": "^1.12.2",
+    "expo": "54.0.21",
+    "expo-constants": "~18.0.10",
+    "expo-image-picker": "~17.0.8",
+    "expo-location": "~19.0.7",
+    "expo-notifications": "~0.32.12",
+    "expo-secure-store": "~15.0.7",
+    "expo-status-bar": "~3.0.8",
+    "react": "19.1.0",
+    "react-native": "^0.81.5",
+    "react-native-gesture-handler": "~2.28.0",
+    "react-native-maps": "~1.20.1",
+    "react-native-reanimated": "~4.1.1",
+    "react-native-safe-area-context": "~5.6.0",
+    "react-native-screens": "~4.16.0",
+    "react-native-worklets": "^0.5.1",
+    "react-redux": "^9.1.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.20.0",
+    "@react-native-community/cli-server-api": "^20.0.2",
+    "babel-preset-expo": "~54.0.0",
+    "typescript": "~5.9.2"
+  },
+  "private": true
+}

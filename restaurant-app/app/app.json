@@ -1,0 +1,39 @@
+{
+  "expo": {
+    "name": "Restaurant App",
+    "slug": "restaurant-app",
+    "version": "1.0.0",
+    "sdkVersion": "54.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "resizeMode": "contain",
+      "backgroundColor": "#FFA500"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.restaurant.app"
+    },
+    "android": {
+      "package": "com.restaurant.app",
+      "permissions": [
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION"
+      ]
+    },
+    "plugins": [
+      "expo-location",
+      "expo-notifications",
+      "expo-secure-store"
+    ],
+    "scheme": "restaurant-app",
+    "extra": {
+      "eas": {
+        "projectId": "restaurant-app-dev"
+      }
+    }
+  }
+}

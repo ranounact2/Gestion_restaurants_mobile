@@ -1,0 +1,140 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String    @id @default(cuid())
+  name         String
+  email        String    @unique
+  passwordHash String    @map("password_hash")
+  role         String    @default("CUSTOMER")
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+
+  orders    Order[]
+  addresses Address[]
+  reviews   Review[]
+
+  @@map("users")
+}
+
+model Restaurant {
+  id          String  @id @default(cuid())
+  name        String
+  description String
+  image       String?
+  rating      Float   @default(0)
+  deliveryFee Float   @map("delivery_fee")
+  eta         Int     // en minutes
+  latitude    Float?
+  longitude   Float?
+  isActive    Boolean @default(true) @map("is_active")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  menuItems MenuItem[]
+  orders    Order[]
+  reviews   Review[]
+
+  @@map("restaurants")
+}
+
+model MenuItem {
+  id           String  @id @default(cuid())
+  restaurantId String  @map("restaurant_id")
+  name         String
+  description  String?
+  price        Float
+  image        String?
+  category     String?
+  isAvailable  Boolean @default(true) @map("is_available")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  restaurant Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  orderItems OrderItem[]
+
+  @@map("menu_items")
+}
+
+model Order {
+  id           String      @id @default(cuid())
+  userId       String      @map("user_id")
+  restaurantId String      @map("restaurant_id")
+  status       String      @default("PENDING")
+  total        Float
+  deliveryFee  Float       @map("delivery_fee")
+  subtotal     Float
+  couponCode   String?     @map("coupon_code")
+  discount     Float       @default(0)
+  deliveryAddress String?  @map("delivery_address")
+  paymentMethod String?    @map("payment_method")
+  createdAt    DateTime    @default(now()) @map("created_at")
+  updatedAt    DateTime    @updatedAt @map("updated_at")
+
+  user       User        @relation(fields: [userId], references: [id])
+  restaurant Restaurant @relation(fields: [restaurantId], references: [id])
+  orderItems OrderItem[]
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id         String @id @default(cuid())
+  orderId    String @map("order_id")
+  menuItemId String @map("menu_item_id")
+  quantity   Int
+  unitPrice  Float  @map("unit_price")
+
+  order    Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  menuItem MenuItem @relation(fields: [menuItemId], references: [id])
+
+  @@map("order_items")
+}
+
+model Address {
+  id        String  @id @default(cuid())
+  userId    String  @map("user_id")
+  label     String
+  line1     String
+  line2     String?
+  city      String
+  postalCode String? @map("postal_code")
+  latitude  Float?
+  longitude Float?
+  isDefault Boolean @default(false) @map("is_default")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("addresses")
+}
+
+model Review {
+  id           String   @id @default(cuid())
+  userId       String   @map("user_id")
+  restaurantId String   @map("restaurant_id")
+  rating       Int      // 1-5
+  comment      String?
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  user       User       @relation(fields: [userId], references: [id])
+  restaurant Restaurant @relation(fields: [restaurantId], references: [id])
+
+  @@unique([userId, restaurantId])
+  @@map("reviews")
+}
+
+// Enums are replaced with String fields with default values
+// Role: "CUSTOMER" | "ADMIN"
+// OrderStatus: "PENDING" | "CONFIRMED" | "PREPARING" | "READY" | "DELIVERED" | "CANCELLED"
